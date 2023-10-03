@@ -44,34 +44,32 @@ def handlerBinaryzation(img):
 
     return binary_image
 
-def handlerRemoveBg(img):
-    threshold = 128
-    mask = img > threshold
-    remove_image = img.copy()
-    remove_image[~mask] = 0
-    return remove_image
+def handlerRemoveBg(color_image, binary_image):
+    mask = np.zeros_like(color_image)
+    mask[binary_image > 0] = color_image[binary_image > 0]
+    return mask
 
 capy_gray_image = handlerGrayscale(image_01)
 capy_binary_image = handlerBinaryzation(capy_gray_image)
-capy_remove_image = handlerRemoveBg(image_01)
+capy_remove_image = handlerRemoveBg(image_01, capy_binary_image)
 cv2.imwrite('capy_binary_image.jpeg', capy_binary_image)
 cv2.imwrite('capy_remove_image.jpeg', capy_remove_image)
 
 shrek_gray_image = handlerGrayscale(image_02)
 shrek_binary_image = handlerBinaryzation(shrek_gray_image)
-shrek_remove_image = handlerRemoveBg(image_02)
+shrek_remove_image = handlerRemoveBg(image_02, shrek_binary_image)
 cv2.imwrite('shrek_binary_image.jpeg', shrek_binary_image)
 cv2.imwrite('shrek_remove_image.jpeg', shrek_remove_image)
 
 text_01_gray_image = handlerGrayscale(image_03)
 text_01_binary_image = handlerBinaryzation(text_01_gray_image)
-text_01_remove_image = handlerRemoveBg(image_03)
+text_01_remove_image = handlerRemoveBg(image_03, text_01_binary_image)
 cv2.imwrite('text_01_binary_image.jpeg', text_01_binary_image)
 cv2.imwrite('text_01_remove_image.jpeg', text_01_remove_image)
 
 text_02_gray_image = handlerGrayscale(image_04)
 text_02_binary_image = handlerBinaryzation(text_02_gray_image)
-text_02_remove_image = handlerRemoveBg(image_04)
+text_02_remove_image = handlerRemoveBg(image_04, text_02_binary_image)
 cv2.imwrite('text_02_binary_image.jpeg', text_02_binary_image)
 cv2.imwrite('text_02_remove_image.jpeg', text_02_remove_image)
 
